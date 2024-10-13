@@ -10,6 +10,11 @@ namespace Grid2Spreadsheet
     {
         public static void Grid2Excel(DataGridView dgv, string filename = "", bool saveFile = false)
         {
+            Grid2Excel(dgv, "Sheet1", filename, saveFile);
+        }
+
+        public static void Grid2Excel(DataGridView dgv, string workSheet, string filename = "", bool saveFile = false)
+        {
             // creating Excel Application  
             Excel._Application app = new Excel.Application();
             // creating new WorkBook within Excel application  
@@ -23,7 +28,7 @@ namespace Grid2Spreadsheet
             worksheet = workbook.Sheets["Sheet1"];
             worksheet = workbook.ActiveSheet;
             // changing the name of active sheet  
-            worksheet.Name = "JobCheck";
+            worksheet.Name = workSheet;
             // storing header part in Excel  
             for (int i = 0, k = 1; i < dgv.Columns.Count; i++)
             {
