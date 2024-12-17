@@ -42,6 +42,7 @@ namespace Grid2Spreadsheet
 
                 int start = 0;
                 if (header) start = 1;*/
+
                 for (int start = 0; start < totalRows; start += batchSize)
                 {
 
@@ -105,7 +106,7 @@ namespace Grid2Spreadsheet
             worksheet = workbook.Sheets["Sheet1"];
             worksheet = workbook.ActiveSheet;
             // changing the name of active sheet  
-            worksheet.Name = workSheet;
+            worksheet.Name = "JobCheck";
             // storing header part in Excel  
             for (int i = 0, k = 1; i < dgv.Columns.Count; i++)
             {
