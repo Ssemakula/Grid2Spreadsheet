@@ -33,17 +33,21 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="LogicMethods">
-      <HintPath>..\..\..\..\..\..\Learning\C Sharp\Source\Repos\LogicMethods\LogicMethods\bin\Release\LogicMethods.dll</HintPath>
+      <HintPath>..\..\..\..\..\Builds\MyClasses\LogicMethods.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1001\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
+    <Reference Include="MiniExcel, Version=1.36.0.0, Culture=neutral, PublicKeyToken=e7310002a53eac39, processorArchitecture=MSIL">
+      <HintPath>..\packages\MiniExcel.1.36.0\lib\net45\MiniExcel.dll</HintPath>
+    </Reference>
     <Reference Include="NotifyMethods">
-      <HintPath>..\..\..\..\..\..\Learning\Builds\MyClasses\NotifyMethods.dll</HintPath>
+      <HintPath>..\..\..\..\..\Builds\MyClasses\NotifyMethods.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
