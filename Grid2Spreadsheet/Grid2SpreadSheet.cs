@@ -13,7 +13,7 @@ namespace Grid2Spreadsheet
 {
     public class GridSpreadsheet
     {
-        public static void Grid2Excel(DataGridView dgv, string filename, bool _1 = true)
+        public static void Grid2Excel(DataGridView dgv, string filename, bool header = true)
         //saveFile included for backwards comatibility, not used
         {
             if (string.IsNullOrEmpty(filename))
@@ -27,8 +27,8 @@ namespace Grid2Spreadsheet
 
             using (var stream = File.Create(filename))
             {
-                /*var headerRow = new Dictionary<string, object>();
-                if (header)
+                var headerRow = new Dictionary<string, object>();
+                if (!header)
                 {
                     foreach (DataGridViewColumn column in dgv.Columns)
                     {
@@ -39,9 +39,6 @@ namespace Grid2Spreadsheet
                     }
                     data.Add(headerRow);
                 }
-
-                int start = 0;
-                if (header) start = 1;*/
 
                 for (int start = 0; start < totalRows; start += batchSize)
                 {
@@ -57,7 +54,10 @@ namespace Grid2Spreadsheet
                             {
                                 if (dgv.Columns[cell.ColumnIndex].Visible)
                                 {
-                                    rowData[dgv.Columns[cell.ColumnIndex].HeaderText] = cell.Value;
+                                    string key = header
+                                        ? dgv.Columns[cell.ColumnIndex].HeaderText
+                                        : dgv.Columns[cell.ColumnIndex].Index.ToString();
+                                    rowData[key] = cell.Value;
                                 }
                             }
                             data.Add(rowData);
