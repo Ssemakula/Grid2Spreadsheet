@@ -105,7 +105,7 @@ namespace Grid2Spreadsheet
             worksheet = workbook.Sheets["Sheet1"];
             worksheet = workbook.ActiveSheet;
             // changing the name of active sheet  
-            worksheet.Name = "JobCheck";
+            worksheet.Name = workSheet;
             // storing header part in Excel  
             for (int i = 0, k = 1; i < dgv.Columns.Count; i++)
             {
