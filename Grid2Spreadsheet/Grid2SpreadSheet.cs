@@ -5,6 +5,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using System.Numerics;
 using static LogicMethods.LogicMethods;
 using static NotifyMethods.NotifyMessage;
 using Excel = Microsoft.Office.Interop.Excel; //Clear up ambiguity with Application et al
@@ -18,9 +19,20 @@ namespace Grid2Spreadsheet
         {
             if (string.IsNullOrEmpty(filename))
             {
+                if (!IsExcelInstalled())
+                {
+                    Notify("Unable to initialise Excel");
+                    return;
+                }
                 Grid2Excel(dgv);
                 return;
             }
+            if (IsExcelInstalled()) 
+            { 
+                Grid2Excel(dgv, true, filename);
+                return;
+            }
+
             var data = new List<Dictionary<string, object>>();
             int batchSize = 1000; // Process 1000 rows at a time
             int totalRows = dgv.Rows.Count;
@@ -81,7 +93,7 @@ namespace Grid2Spreadsheet
             Notify($"Copied to Excel file {filename}");
         }
 
-        public static void Grid2Excel(DataGridView dgv) //, string filename = "", bool saveFile = false)
+        public static void Grid2Excel(DataGridView dgv, bool saveFile = false, string filename = "")
         {
             Excel._Application app;
             // creating Excel Application  
@@ -129,19 +141,36 @@ namespace Grid2Spreadsheet
                     }
                 }
             }
-            /*if (saveFile && IsTrue(filename))
+            if (saveFile && !string.IsNullOrEmpty(filename))
             {
                 // save the application  
                 workbook.SaveAs(filename, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
                 //Exit from the application  
                 app.Quit();
             }
-            else*/
+            else
             {
                 //If not saving to file then show the worksheet
                 app.Visible = true;
             }
             Notify("Transfered to Excel");
+        }
+
+        public static bool IsExcelInstalled()
+        {
+            bool result;
+
+            try
+            {
+                Type excelType = Type.GetTypeFromProgID("Excel.Application");
+                result = excelType != null;
+            }
+            catch
+            {
+                result = false;
+            }
+
+            return result;
         }
     }
 }
