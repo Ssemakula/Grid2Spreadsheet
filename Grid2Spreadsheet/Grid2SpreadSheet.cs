@@ -13,6 +13,9 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using System.Runtime.CompilerServices;
 using System.Globalization;
+using DocumentFormat.OpenXml.VariantTypes;
+
+using Microsoft.Office.Interop.Excel;
 
 namespace Grid2Spreadsheet
 {
@@ -160,11 +163,48 @@ namespace Grid2Spreadsheet
             using (SpreadsheetDocument document = SpreadsheetDocument.Create(filename, SpreadsheetDocumentType.Workbook))
             {
                 WorkbookPart workbookPart = document.AddWorkbookPart();
-                workbookPart.Workbook = new Workbook();
-                WorksheetPart worksheetPart = workbookPart.AddNewPart<WorksheetPart>();
-                worksheetPart.Worksheet = new Worksheet(new SheetData());
+                workbookPart.Workbook = new DocumentFormat.OpenXml.Spreadsheet.Workbook();
 
-                Sheets sheets = workbookPart.Workbook.AppendChild(new Sheets());
+                // ======== Add styles for date formatting ========
+                /*WorkbookStylesPart stylesPart = workbookPart.AddNewPart<WorkbookStylesPart>();
+                stylesPart.Stylesheet = new Stylesheet();
+
+                // Define a date format (Use ID ≥ 164 for custom formats)
+                *//*NumberingFormat nfDate = new NumberingFormat() { NumberFormatId = 164, FormatCode = "yyyy-mm-dd" };
+
+                NumberingFormats numberingFormats = new NumberingFormats();
+                numberingFormats.Append(nfDate);
+                numberingFormats.Count = 1;*//*
+
+                CellStyleFormats cellStyleFormats = new CellStyleFormats();
+                cellStyleFormats.Append(new DocumentFormat.OpenXml.Spreadsheet.CellFormat());
+                cellStyleFormats.Count = 1;
+
+                CellFormats cellFormats = new CellFormats();
+                cellFormats.Append(new DocumentFormat.OpenXml.Spreadsheet.CellFormat()); // Default style (index 0)
+                cellFormats.Append(new DocumentFormat.OpenXml.Spreadsheet.CellFormat()
+                {
+                    NumberFormatId = 14, // Apply custom date format
+                    ApplyNumberFormat = true
+                });
+                cellFormats.Count = 2;
+
+                //Defining style
+                CellStyles cellStyles = new CellStyles();
+                cellStyles.Append(new CellStyle() { FormatId = 0, BuiltinId = 0 });
+                cellStyles.Count = 1;
+
+                // Save Stylesheet
+                stylesPart.Stylesheet.CellStyleFormats = cellStyleFormats;
+                stylesPart.Stylesheet.CellFormats = cellFormats;
+                stylesPart.Stylesheet.CellStyles = cellStyles;
+                stylesPart.Stylesheet.Save();*/
+                // ========= END FORMAT ============================
+
+                WorksheetPart worksheetPart = workbookPart.AddNewPart<WorksheetPart>();
+                worksheetPart.Worksheet = new DocumentFormat.OpenXml.Spreadsheet.Worksheet(new SheetData());
+
+                DocumentFormat.OpenXml.Spreadsheet.Sheets sheets = workbookPart.Workbook.AppendChild(new DocumentFormat.OpenXml.Spreadsheet.Sheets());
                 Sheet sheet = new Sheet() { Id = workbookPart.GetIdOfPart(worksheetPart), SheetId = 1, Name = wsn };
                 sheets.Append(sheet);
 
@@ -205,12 +245,13 @@ namespace Grid2Spreadsheet
                                     excelCell.DataType = CellValues.Boolean;
                                     excelCell.CellValue = new CellValue((bool)cellValue ? "1" : "0");
                                 }
-                                else if (IsDateTime(cellValue))
+                                /*else if (IsDateTime(cellValue))
                                 {
                                     double oaDate = ((DateTime)cellValue).ToOADate();
-                                    excelCell.DataType = CellValues.Number;
+                                    excelCell.DataType = CellValues.Date;
                                     excelCell.CellValue = new CellValue(oaDate.ToString(CultureInfo.InvariantCulture));
-                                }
+                                    //excelCell.StyleIndex = 1;
+                                }*/
                                 else if (IsNumeric(cellValue))
                                 {
                                     excelCell.DataType = CellValues.Number;
@@ -239,7 +280,7 @@ namespace Grid2Spreadsheet
                     string startCol = GetExcelColumnName(0); // "A"
                     string endCol = GetExcelColumnName(visibleColumns.Count - 1); // e.g., "C"
 
-                    worksheetPart.Worksheet.Append(new AutoFilter()
+                    worksheetPart.Worksheet.Append(new DocumentFormat.OpenXml.Spreadsheet.AutoFilter()
                     {
                         Reference = $"{startCol}1:{endCol}{totalRows}" // e.g., "A1:C10"
                     });
