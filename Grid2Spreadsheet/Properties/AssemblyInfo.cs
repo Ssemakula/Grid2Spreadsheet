@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Grid2Spreadsheet")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Transfers grids to Excel Worksheets")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Czemi")]
 [assembly: AssemblyProduct("Grid2Spreadsheet")]
-[assembly: AssemblyCopyright("Copyright ©  2024 Czemi Limited")]
+[assembly: AssemblyCopyright("Copyright ©  2024-25 Czemi Limited")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.3.0.0")]
-[assembly: AssemblyFileVersion("1.3.0.0")]
+[assembly: AssemblyVersion("1.5.0.0")]
+[assembly: AssemblyFileVersion("1.5.0.0")]
